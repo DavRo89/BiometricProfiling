@@ -1,11 +1,13 @@
 package com.example.davide.biometricprofiling;
 
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,6 +24,10 @@ public class RecyclerListFragment extends Fragment implements OnStartDragListene
 
     private ItemTouchHelper mItemTouchHelper;
 public List<String> biometricsames=new ArrayList<String>();
+    public List<String> ListaBio=new ArrayList<String>();
+
+
+
     public RecyclerListFragment() {
     }
 
@@ -46,6 +52,9 @@ public List<String> biometricsames=new ArrayList<String>();
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 adapter.setListItems(names);
 
+ListaBio.addAll(adapter.getItems());
+
+
         ItemTouchHelper.Callback callback = new SimpleItemTouchHelperCallback(adapter);
         mItemTouchHelper = new ItemTouchHelper(callback);
         mItemTouchHelper.attachToRecyclerView(recyclerView);
@@ -55,6 +64,9 @@ adapter.setListItems(names);
     @Override
     public void onStartDrag(RecyclerView.ViewHolder viewHolder) {
         mItemTouchHelper.startDrag(viewHolder);
+
+
+
     }
 
 

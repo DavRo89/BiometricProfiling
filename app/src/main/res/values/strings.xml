@@ -32,5 +32,6 @@
         <item>Face</item>
         <item>Hands</item>
         <item>Iris</item>
+        <item>Fingerprints</item>
     </string-array>
 </resources>

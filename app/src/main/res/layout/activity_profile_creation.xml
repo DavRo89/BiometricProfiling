@@ -8,46 +8,48 @@
               android:orientation="vertical"
               tools:context=".ProfileCreation">
 
-<RelativeLayout
-        android:id="@+id/content"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-    android:descendantFocusability="blocksDescendants"
-
->
     <EditText
             android:id="@+id/edit_name"
-            android:layout_width="300dp"
+            android:layout_width="match_parent"
             android:layout_height="50dp"
             android:hint="ProfileName"
             tools:layout_editor_absoluteY="50dp" tools:layout_editor_absoluteX="80dp"
-            android:layout_marginTop="31dp" android:layout_alignParentTop="true"
-            android:layout_centerHorizontal="true"
-            android:textIsSelectable="false"/>
-    <Button
-            android:text="Cancel"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/button3"
-            android:layout_alignBaseline="@+id/button5" android:layout_alignBottom="@+id/button5"
-            android:layout_alignRight="@+id/edit_name" android:layout_alignEnd="@+id/edit_name"
-            android:layout_marginRight="19dp" android:layout_marginEnd="19dp" android:onClick="ReadBtn"
-            android:focusable="false"/>
-    <Button
-            android:text="Save"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/button5"
-            android:layout_marginLeft="15dp" android:layout_marginStart="15dp" android:layout_alignParentBottom="true"
-            android:layout_alignLeft="@+id/edit_name" android:layout_alignStart="@+id/edit_name"
-            android:layout_marginBottom="104dp" android:onClick="WriteBtn"
-            android:focusable="false"/>
-    <Button
-            android:text="Delete"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" android:layout_alignParentBottom="true"
-            android:layout_toLeftOf="@+id/button3" android:layout_toStartOf="@+id/button3"
-            android:layout_marginBottom="24dp" android:id="@+id/button6" android:onClick="Delete"
-            android:focusable="false"/>
-</RelativeLayout>
+            android:textIsSelectable="false" android:layout_above="@+id/button3" android:layout_centerHorizontal="true"
+            android:layout_marginBottom="70dp"/>
+    <RelativeLayout
+            android:id="@+id/content"
+            android:layout_marginTop="-135px"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:descendantFocusability="blocksDescendants">
+
+        <Button
+                android:text="Cancel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/button3"
+                android:layout_marginRight="34dp" android:layout_marginEnd="34dp" android:onClick="ReadBtn"
+                android:focusable="false"
+                android:layout_alignBaseline="@+id/button5" android:layout_alignBottom="@+id/button5"
+                android:layout_alignParentRight="true" android:layout_alignParentEnd="true"/>
+        <Button
+                android:text="Save"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/button5"
+                android:layout_marginLeft="15dp" android:layout_marginStart="15dp"
+                android:layout_alignParentBottom="true"
+                android:layout_alignLeft="@+id/edit_name" android:layout_alignStart="@+id/edit_name"
+                android:layout_marginBottom="104dp" android:onClick="WriteBtn"
+                android:focusable="false"/>
+        <Button
+                android:text="Delete"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="23dp" android:id="@+id/button6" android:onClick="Delete"
+                android:focusable="false"
+                android:layout_alignParentBottom="true" android:layout_toLeftOf="@+id/button3"
+                android:layout_toStartOf="@+id/button3" android:layout_marginRight="33dp"
+                android:layout_marginEnd="33dp"/>
+    </RelativeLayout>
 </LinearLayout>

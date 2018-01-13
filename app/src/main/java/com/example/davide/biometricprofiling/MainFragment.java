@@ -40,7 +40,7 @@ public class MainFragment extends ListFragment {
         super.onActivityCreated(savedInstanceState);
         Log.d("dentro","va");
         Bundle args = getArguments();
-        List<String> names= args.getStringArrayList("biometric_names");
+        List<String> names= args.getStringArrayList("nomiB");
 
         final List<String> items = names;
         final ArrayAdapter<String> adapter = new ArrayAdapter<>(getActivity(),

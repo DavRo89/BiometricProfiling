@@ -1,6 +1,7 @@
 package com.example.davide.biometricprofiling;
 
 
+import android.content.Context;
 import android.content.pm.PackageManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -11,6 +12,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
+import org.json.JSONObject;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -23,6 +25,8 @@ public class ProfileCreation extends AppCompatActivity  implements MainFragment.
     public static String nome;
     public static ArrayList<String> Lines = new ArrayList<String>();
     public static String[] biometric_names ;
+    public  List<String> ListaBiom=new ArrayList<String>();//lista delle biometrie
+    JSONObject obj = new JSONObject();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -30,90 +34,62 @@ public class ProfileCreation extends AppCompatActivity  implements MainFragment.
 
         textmsg=(EditText)findViewById(R.id.edit_name);
         if (savedInstanceState == null) {
-            MainFragment fragment = new MainFragment();
-            Bundle bundle = new Bundle();
-
-
+       Lines.clear();
        biometric_names=(getResources().getStringArray(R.array.biometric_array));
           Lines.addAll(Arrays.asList(biometric_names));
+            Fragment fragment2 = null;
+            fragment2 = new RecyclerListFragment();
 
-            bundle.putStringArrayList("biometric_names",Lines);
-            fragment.setArguments(bundle);
-            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-            transaction.replace(R.id.content, fragment);
-            transaction.commit();
-            /*
             Bundle bundle = new Bundle();
-            bundle.putStringArray("nomi", getResources().getStringArray(R.array.biometric_array));
+            bundle.putStringArrayList("nomi", Lines);
+            Log.d("nomi", biometric_names[1]);
+            fragment2.setArguments(bundle);
             getSupportFragmentManager().beginTransaction()
-                    .add(R.id.content, fragment)
+                    .replace(R.id.content, fragment2)
+                    .addToBackStack(null)
                     .commit();
-                    */
-        }
-/*
-        try {
-            FileOutputStream fOut = openFileOutput("caso",Context.MODE_PRIVATE);
-            Log.d("filepath",fOut.toString());
-            OutputStreamWriter outputWriter=new OutputStreamWriter(fOut);
-            String str = "test data";
-            outputWriter.write(textmsg.getText().toString());
-            fOut.write(str.getBytes());
-            fOut.close();
 
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
         }
-*/
+
 
     }
 
+
     /*    final Button btn = (Button) findViewById(R.id.button1);*/
-
-
 
     public void WriteBtn(View v) {
 
 
         // add-write text into file
+
         try {
-            nome=textmsg.getText().toString();
-            Bundle bundle = new Bundle();
-            bundle.putStringArray("nomi", getResources().getStringArray(R.array.biometric_array));
-            ;
+
+            textmsg=(EditText)findViewById(R.id.edit_name);
 
 
-            MainFragment fragment = new MainFragment();
-        getSupportFragmentManager().beginTransaction()
-                    .add(R.id.content, fragment)
-                    .commit();
-            fragment.setArguments(bundle);
+                 obj.put("Sessione", ListaBiom);
 
+              Log.d("Json",obj.getString("Sessione"));
+System.out.println(obj);
+Log.d("ListaActivity", ListaBiom.subList(0,4).toString());
 
-            /*
-            FileOutputStream fileout=openFileOutput(nome, MODE_PRIVATE);
-            OutputStreamWriter outputWriter=new OutputStreamWriter(fileout);
-            outputWriter.close();
-            */
+            boolean isFileCreated = create(ProfileCreation.this, textmsg.getText().toString(), obj.getString("Sessione"));
+            if(isFileCreated) {
+                Toast.makeText(getBaseContext(), "File saved successfully!",
+                        Toast.LENGTH_SHORT).show();
+            } else {
+                //show error or try again.
+            }
 
-/*
-           Fragment fragment = new RecyclerListFragment();
-            bundle.putStringArray("nomi", getResources().getStringArray(R.array.biometric_array));
-            fragment.setArguments(bundle);
-            getSupportFragmentManager().beginTransaction()
-                    .add(R.id.content, fragment)
-                    .commit();
-            fragment.setArguments(bundle);
-*/
            // startActivity(new Intent(ProfileCreation.this, Biometrics_features.class));
             //display file saved message
-            Toast.makeText(getBaseContext(), "File saved successfully!",
-                    Toast.LENGTH_SHORT).show();
+
 
         } catch (Exception e) {
             e.printStackTrace();
         }
+
+
     }
 
 
@@ -143,7 +119,8 @@ public class ProfileCreation extends AppCompatActivity  implements MainFragment.
 
     public void Delete(View v){
         File mydir = getFilesDir(); //get your internal directory
-        File myFile = new File(mydir, textmsg.getText().toString());
+        File myFile = new File(mydir.toString(), textmsg.getText().toString());
+        Log.d("path",myFile.toString());
         myFile.delete();
 
     }
@@ -157,6 +134,28 @@ public class ProfileCreation extends AppCompatActivity  implements MainFragment.
                 .addToBackStack(null)
                 .commit();
     }
+    //Settare lista da inserire nel file
+    public void  getList(List<String> lista){
+        ListaBiom.clear();
+        ListaBiom.addAll(lista);
+
+    }
 
 
+    private boolean create(Context context, String fileName, String jsonString){
+
+        try {
+            FileOutputStream fos = openFileOutput(fileName,Context.MODE_PRIVATE);
+            if (jsonString != null) {
+                fos.write(jsonString.getBytes());
+            }
+            fos.close();
+            return true;
+        } catch (FileNotFoundException fileNotFound) {
+            return false;
+        } catch (IOException ioException) {
+            return false;
+        }
+
+    }
 }

@@ -20,6 +20,7 @@ import android.content.Context;
 import android.graphics.Color;
 import android.support.v4.view.MotionEventCompat;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -51,9 +52,9 @@ public class RecyclerListAdapter extends RecyclerView.Adapter<RecyclerListAdapte
         implements ItemTouchHelperAdapter {
 
     private final List<String> mItems = new ArrayList<>();
-
+    private final List<String> Lista = new ArrayList<>();
     private final OnStartDragListener mDragStartListener;
-
+    private Context mContext;
 
     public void setListItems(List<String> names){
         mItems.addAll(names);
@@ -63,7 +64,7 @@ public class RecyclerListAdapter extends RecyclerView.Adapter<RecyclerListAdapte
 
     public RecyclerListAdapter(Context context, OnStartDragListener dragStartListener) {
         mDragStartListener = dragStartListener;
-
+        this.mContext=context;
     }
 
 
@@ -72,6 +73,9 @@ public class RecyclerListAdapter extends RecyclerView.Adapter<RecyclerListAdapte
     public ItemViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_main, parent, false);
         ItemViewHolder itemViewHolder = new ItemViewHolder(view);
+        if(mContext instanceof ProfileCreation){
+            ((ProfileCreation)mContext).getList(mItems);
+        }
         return itemViewHolder;
     }
 
@@ -100,9 +104,29 @@ public class RecyclerListAdapter extends RecyclerView.Adapter<RecyclerListAdapte
     @Override
     public boolean onItemMove(int fromPosition, int toPosition) {
         Collections.swap(mItems, fromPosition, toPosition);
+
         notifyItemMoved(fromPosition, toPosition);
+        if(mContext instanceof ProfileCreation){
+            ((ProfileCreation)mContext).getList(mItems);
+
+        }
+
+        if(mContext instanceof ProfileManager){
+            ((ProfileManager)mContext).getList(mItems);
+
+        }
+
         return true;
+
+
     }
+
+    public List<String> getItems() {
+        Lista.addAll(mItems);
+        return  Lista;
+
+    }
+
 
     @Override
     public int getItemCount() {
@@ -135,4 +159,6 @@ public class RecyclerListAdapter extends RecyclerView.Adapter<RecyclerListAdapte
             itemView.setBackgroundColor(0);
         }
     }
+
+
 }
