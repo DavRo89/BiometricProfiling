@@ -71,19 +71,9 @@ private List<File> filesNoFolder= new ArrayList<>();
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile_manager);
-        findViewById(R.id.pink_icon).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(ProfileManager.this, "Clicked pink Floating Action Button", Toast.LENGTH_SHORT).show();
-            }
-        });
 
-        FloatingActionButton button = (FloatingActionButton) findViewById(R.id.setter);
-        button.setSize(FloatingActionButton.SIZE_MINI);
-        button.setColorNormalResId(R.color.pink);
-        button.setColorPressedResId(R.color.pink_pressed);
-        button.setIcon(R.drawable.ic_fab_star);
-        button.setStrokeVisible(false);
+
+
 
 
         try {
@@ -100,7 +90,17 @@ private List<File> filesNoFolder= new ArrayList<>();
 
 
 
-
+        if (savedInstanceState == null ) {
+            MainFragment fragment = new MainFragment();
+            Bundle bundle = new Bundle();
+            bundle.putStringArrayList("nomi", scripts);
+            Log.d("vediamo", ListCollection.toString());
+            bundle.putStringArrayList("nomiB", ListCollection);
+            fragment.setArguments(bundle);
+            getSupportFragmentManager().beginTransaction()
+                    .add(R.id.content, fragment)
+                    .commit();
+        }
         final View actionB = findViewById(R.id.action_b);
 
         FloatingActionButton actionC = new FloatingActionButton(getBaseContext());
@@ -115,17 +115,10 @@ private List<File> filesNoFolder= new ArrayList<>();
         final FloatingActionsMenu menuMultipleActions = (FloatingActionsMenu) findViewById(R.id.multiple_actions);
         menuMultipleActions.addButton(actionC);
 
-        final FloatingActionButton removeAction = (FloatingActionButton) findViewById(R.id.button_remove);
-        removeAction.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ((FloatingActionsMenu) findViewById(R.id.multiple_actions_down)).removeButton(removeAction);
-            }
-        });
+
 
         ShapeDrawable drawable = new ShapeDrawable(new OvalShape());
         drawable.getPaint().setColor(getResources().getColor(R.color.white));
-        ((FloatingActionButton) findViewById(R.id.setter_drawable)).setIconDrawable(drawable);
 
 
         final FloatingActionButton actionA = (FloatingActionButton) findViewById(R.id.action_a);
@@ -137,37 +130,12 @@ private List<File> filesNoFolder= new ArrayList<>();
         });
 
 
-        final FloatingActionButton actionEnable = (FloatingActionButton) findViewById(R.id.action_enable);
-        actionEnable.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                menuMultipleActions.setEnabled(!menuMultipleActions.isEnabled());
-            }
-        });
-
-
-        FloatingActionsMenu rightLabels = (FloatingActionsMenu) findViewById(R.id.right_labels);
         FloatingActionButton addedOnce = new FloatingActionButton(this);
         addedOnce.setTitle("Added once");
-        rightLabels.addButton(addedOnce);
+
 
         FloatingActionButton addedTwice = new FloatingActionButton(this);
         addedTwice.setTitle("Added twice");
-        rightLabels.addButton(addedTwice);
-        rightLabels.removeButton(addedTwice);
-        rightLabels.addButton(addedTwice);
-
-        if (savedInstanceState == null ) {
-            MainFragment fragment = new MainFragment();
-            Bundle bundle = new Bundle();
-            bundle.putStringArrayList("nomi", scripts);
-            Log.d("vediamo", ListCollection.toString());
-            bundle.putStringArrayList("nomiB", ListCollection);
-            fragment.setArguments(bundle);
-            getSupportFragmentManager().beginTransaction()
-                    .add(R.id.content, fragment)
-                    .commit();
-        }
 
 
 
