@@ -211,7 +211,26 @@ private List<File> filesNoFolder= new ArrayList<>();
                 break;
 
         }
+        switch (position) {
+            case 3:
+                indiceAssoluto=3;
+                posizione =3;
+                fragment = new RecyclerListFragment();
+                try {
+                    ReadProfiles(posizione);
+                    Bundle bundle = new Bundle();
+                    bundle.putStringArrayList("nomi", scripts);
+                    fragment.setArguments(bundle);
 
+                } catch (PackageManager.NameNotFoundException e) {
+                    e.printStackTrace();
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                }
+
+                break;
+
+        }
 
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.content, fragment)

@@ -2,14 +2,11 @@ package com.example.davide.biometricprofiling;
 
 
 import android.content.Context;
-import android.content.pm.PackageManager;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 import org.json.JSONObject;
@@ -31,7 +28,7 @@ public class ProfileCreation extends AppCompatActivity  implements MainFragment.
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile_creation);
-
+      //  ModuleReader.allModules();
         textmsg=(EditText)findViewById(R.id.edit_name);
         if (savedInstanceState == null) {
        Lines.clear();
