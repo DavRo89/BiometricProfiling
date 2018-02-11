@@ -2,6 +2,8 @@ package com.example.davide.biometricprofiling;
 
 
 import android.content.Context;
+import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageManager;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -9,12 +11,12 @@ import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
+import dalvik.system.DexFile;
 import org.json.JSONObject;
 
 import java.io.*;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.net.URL;
+import java.util.*;
 
 public class ProfileCreation extends AppCompatActivity  implements MainFragment.OnListItemClickListener{
     EditText textmsg;
@@ -28,12 +30,22 @@ public class ProfileCreation extends AppCompatActivity  implements MainFragment.
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile_creation);
-      //  ModuleReader.allModules();
+        ModuleReader prova= null;
+        try {
+            prova = new ModuleReader(this);
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+
+      //  prova.getClassesOfPackage("com.");
+
+
+
         textmsg=(EditText)findViewById(R.id.edit_name);
         if (savedInstanceState == null) {
        Lines.clear();
        biometric_names=(getResources().getStringArray(R.array.biometric_array));
-          Lines.addAll(Arrays.asList(biometric_names));
+          Lines.addAll(prova.getClassesOfPackage("com."));
             Fragment fragment2 = null;
             fragment2 = new RecyclerListFragment();
 
@@ -50,6 +62,9 @@ public class ProfileCreation extends AppCompatActivity  implements MainFragment.
 
 
     }
+
+
+
 
 
     /*    final Button btn = (Button) findViewById(R.id.button1);*/

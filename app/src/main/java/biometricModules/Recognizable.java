@@ -1,6 +1,6 @@
 package biometricModules;
 
-public interface Recognitizable {
+public interface Recognizable {
     public void exec();
 
 
