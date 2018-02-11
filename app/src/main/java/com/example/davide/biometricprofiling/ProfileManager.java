@@ -72,10 +72,6 @@ private List<File> filesNoFolder= new ArrayList<>();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile_manager);
 
-
-
-
-
         try {
             getProfilesName();
         } catch (IOException e) {
@@ -145,6 +141,23 @@ private List<File> filesNoFolder= new ArrayList<>();
     public void onListItemClick(int position) {
         Fragment fragment = null;
 
+        fragment = new RecyclerListFragment();
+
+        try {
+            Log.d("test", " " + position);
+            ReadProfiles(position);
+            Bundle bundle = new Bundle();
+            bundle.putStringArrayList("nomi", scripts);
+            fragment.setArguments(bundle);
+
+
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        /*
         int posizione;
         switch (position) {
             case 0:
@@ -166,6 +179,7 @@ private List<File> filesNoFolder= new ArrayList<>();
                     e.printStackTrace();
                 }
                 break;
+
 
         }
 
@@ -216,11 +230,13 @@ private List<File> filesNoFolder= new ArrayList<>();
                 indiceAssoluto=3;
                 posizione =3;
                 fragment = new RecyclerListFragment();
+
                 try {
                     ReadProfiles(posizione);
                     Bundle bundle = new Bundle();
                     bundle.putStringArrayList("nomi", scripts);
                     fragment.setArguments(bundle);
+
 
                 } catch (PackageManager.NameNotFoundException e) {
                     e.printStackTrace();
@@ -232,6 +248,25 @@ private List<File> filesNoFolder= new ArrayList<>();
 
         }
 
+        /*
+        switch (position) {
+            default: {
+                Log.d("posizione", (" "+position));
+                fragment = new RecyclerListFragment();
+                try {
+                    ReadProfiles(position);
+                    Bundle bundle = new Bundle();
+                    bundle.putStringArrayList("nomi", scripts);
+                    fragment.setArguments(bundle);
+
+                } catch (PackageManager.NameNotFoundException e) {
+                    e.printStackTrace();
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        */
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.content, fragment)
                 .addToBackStack(null)
