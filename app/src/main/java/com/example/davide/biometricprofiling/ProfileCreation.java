@@ -39,8 +39,6 @@ public class ProfileCreation extends AppCompatActivity  implements MainFragment.
 
       //  prova.getClassesOfPackage("com.");
 
-
-
         textmsg=(EditText)findViewById(R.id.edit_name);
         if (savedInstanceState == null) {
        Lines.clear();
@@ -69,7 +67,7 @@ public class ProfileCreation extends AppCompatActivity  implements MainFragment.
 
     /*    final Button btn = (Button) findViewById(R.id.button1);*/
 
-    public void WriteBtn(View v) {
+    public void WriteBtn(View v) throws IOException, PackageManager.NameNotFoundException {
 
 
         // add-write text into file
@@ -77,13 +75,11 @@ public class ProfileCreation extends AppCompatActivity  implements MainFragment.
         try {
 
             textmsg=(EditText)findViewById(R.id.edit_name);
-
-
                  obj.put("Sessione", ListaBiom);
 
               Log.d("Json",obj.getString("Sessione"));
-System.out.println(obj);
-Log.d("ListaActivity", ListaBiom.subList(0,4).toString());
+          //  System.out.println(obj);
+//Log.d("ListaActivity", ListaBiom.subList(0,4).toString());
 
             boolean isFileCreated = create(ProfileCreation.this, textmsg.getText().toString(), obj.getString("Sessione"));
             if(isFileCreated) {

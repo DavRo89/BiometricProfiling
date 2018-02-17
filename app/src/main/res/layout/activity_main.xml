@@ -14,7 +14,7 @@
   ~ See the License for the specific language governing permissions and
   ~ limitations under the License.
   -->
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main_container"
@@ -24,12 +24,21 @@
     tools:context=".MainActivity">
 
     <android.support.v7.widget.Toolbar
-        android:id="@+id/toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        android:background="?attr/colorPrimary"
-        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-        app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
+            android:id="@+id/my_toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="20dp"
+            android:background="?attr/colorPrimary"
+            android:elevation="2dp"
+            android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
+            app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
+        <TextView
+
+                android:id="@+id/toolbar_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:textSize="18sp"  android:textColor="@color/background"/>
+    </android.support.v7.widget.Toolbar>
 
 
     <RelativeLayout
@@ -38,13 +47,6 @@
             android:layout_height="match_parent">
 
 
-        <TextView
-
-                android:text="TextView"
-                android:layout_width="0dp"
-                android:layout_height="126dp" tools:layout_editor_absoluteY="383dp"
-                android:id="@+id/textView1"
-                tools:layout_editor_absoluteX="8dp"/>
         <Button
 
                 android:text="Profiles"
@@ -52,14 +54,27 @@
                 android:layout_height="wrap_content" android:id="@+id/button2"
                 tools:layout_editor_absoluteY="383dp" tools:layout_editor_absoluteX="174dp"
                 android:layout_below="@+id/button" android:layout_alignLeft="@+id/button"
-                android:layout_alignStart="@+id/button" android:layout_marginTop="25dp"/>
+                android:layout_alignStart="@+id/button" android:layout_marginTop="20dp"/>
         <Button
                 android:text="Create"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/button"
-                android:layout_marginTop="26dp" android:layout_alignParentTop="true"
+                android:layout_marginTop="12dp" android:layout_below="@+id/button8"
                 android:layout_centerHorizontal="true"/>
+        <Button
+                android:text="Set Profile"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" android:id="@+id/button7"
+                android:layout_below="@+id/button2" android:layout_centerHorizontal="true"
+                android:layout_marginTop="17dp"/>
+        <Button
+                android:text="Run"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/button8"
+                android:layout_alignParentTop="true" android:layout_alignLeft="@+id/button"
+                android:layout_alignStart="@+id/button" android:layout_marginTop="31dp"/>
 
     </RelativeLayout>
-</LinearLayout>
+</RelativeLayout>

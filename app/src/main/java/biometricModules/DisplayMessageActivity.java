@@ -1,19 +1,26 @@
-package com.example.davide.biometricprofiling;
+package biometricModules;
+
 
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.widget.TextView;
+import android.util.Log;
+import com.example.davide.biometricprofiling.MainActivity;
 
 public class DisplayMessageActivity extends AppCompatActivity {
 public static int choice=0;
+
+
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+  public void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
 Privacy();
     }
+
+
 
     private void Privacy(){
         AlertDialog alertDialog = new AlertDialog.Builder(DisplayMessageActivity.this).create();
@@ -39,6 +46,7 @@ Privacy();
         alertDialog.show();
 
     }
+
 
 
 }

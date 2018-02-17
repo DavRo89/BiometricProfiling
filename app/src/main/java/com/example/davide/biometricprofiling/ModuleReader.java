@@ -30,7 +30,7 @@ public class ModuleReader {
 
   public ArrayList<String> getClassesOfPackage(String packageName) {
 
-
+moduli.clear();
       String compare;
       String PackageName="biometricModules";
       try {
@@ -40,7 +40,7 @@ public class ModuleReader {
               compare = iter.nextElement();
           //    Log.d("filezzz",s);
 if(compare.contains(PackageName)&& !compare.contains("biometricModules.Recognizable")){
-    Log.d("Classe",compare);
+    Log.d("ClasseCompare",compare);
 if(Recognizable.class.isAssignableFrom(Class.forName(compare))){
     moduli.add(compare);
     Log.d("interfaccia",moduli.toString());
@@ -48,12 +48,6 @@ if(Recognizable.class.isAssignableFrom(Class.forName(compare))){
 
 }
 
-/*
-              Reflections reflections = new Reflections("com.example.davide.biometricprofiling");
-              Log.d("2222",reflections.toString());
-              Set<Class<? extends Recognizable>> classes = reflections.getSubTypesOf(Recognizable.class);
-            Log.d("classi",classes.toString());
-*/
           }
       } catch (IOException e) {
           e.printStackTrace();

@@ -99,6 +99,7 @@ public class RecyclerListAdapter extends RecyclerView.Adapter<RecyclerListAdapte
     public void onItemDismiss(int position) {
         mItems.remove(position);
         notifyItemRemoved(position);
+
     }
 
     @Override

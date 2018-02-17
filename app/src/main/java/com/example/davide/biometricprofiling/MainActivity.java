@@ -1,43 +1,91 @@
 package com.example.davide.biometricprofiling;
 
-import android.content.Context;
-import android.content.DialogInterface;
+import android.app.Activity;
+
 import android.content.Intent;
-import android.content.res.AssetManager;
-import android.os.Environment;
-import android.provider.Settings;
-import android.support.v7.app.AlertDialog;
+import android.content.SharedPreferences;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
+
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.TextView;
 
+
+
 import java.io.*;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 
 public class MainActivity extends AppCompatActivity {
 
+    public static List<String> profileModules=new ArrayList<String>();
+    public static List<String> profileList=new ArrayList<String>();
+    public static File[] files;
+   private  ArrayList<String> ModuleClass = new ArrayList<String>();
+   public static List<File> filesNoFolder= new ArrayList<>();
 
 
-    @Override
+
+
     protected void onCreate(Bundle savedInstanceState) {
+        SharedPreferences sp = getApplicationContext().getSharedPreferences("profili", Activity.MODE_PRIVATE);
+        String Value = sp.getString("profiliNome","");
+
+        Log.d("StringaProfili",Value);
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
 /*
-        String yourFilePath = getApplicationContext().getFilesDir() + "/" + "prova.txt";
 
-        File yourFile = new File( yourFilePath );
+        Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
+        setSupportActionBar(myToolbar);
+        getSupportActionBar().setDisplayShowTitleEnabled(true);
 
-        Log.d("myTag", yourFile.toString());
+        getSupportActionBar().setTitle("titolo");
+
+Log.d("actionBar",getSupportActionBar().toString());
 */
+        //setSupportActionBar(toolbar);
 
-        if(DisplayMessageActivity.choice==0){
+//toolbar.setTitle("Titolo");
 
-    Intent intent = new Intent(this, DisplayMessageActivity.class);
-    startActivity(intent);
-}
+       // mTitle.setText(Value);
+     //   toolbarTop.setTitle("titolo");
+
+        //toolbarTop.setTitle(Value);
+
+
+    }
+
+
+
+    protected void onResume() {
+        super.onResume();
+        SharedPreferences sp = getApplicationContext().getSharedPreferences("profili", Activity.MODE_PRIVATE);
+        String Value = sp.getString("profiliNome","");
+        Log.d("StringaProfili",Value);
+
+
+
+
+
+        try {
+            getProfilesName();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
 
     setContentView(R.layout.activity_main);
 
@@ -47,7 +95,6 @@ public class MainActivity extends AppCompatActivity {
         btn2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //when play is clicked show stop button and hide play button
 
                 startActivity(new Intent(MainActivity.this, ProfileManager.class));
             }
@@ -60,38 +107,140 @@ public class MainActivity extends AppCompatActivity {
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //when play is clicked show stop button and hide play button
-
                 startActivity(new Intent(MainActivity.this, ProfileCreation.class));
             }
         });
 
-    }
 
+        Button btn7 = (Button)findViewById(R.id.button7);
+        /*    final Button btn = (Button) findViewById(R.id.button1);*/
 
-
-/*
-        btn.setOnClickListener(new View.OnClickListener() {
-
+        btn7.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Load XML for parsing.
-                AssetManager assetManager = getAssets();
-                InputStream inputStream = null;
-                try {
-                    inputStream = assetManager.open("Biometric.xml");
-                } catch (IOException e) {
-                    Log.e("tag", e.getMessage());
-                }
+                ModuleClass.clear();
+                //when play is clicked show stop button and hide play button
 
-                String s = readTextFile(inputStream);
-                TextView tv = (TextView)findViewById(R.id.textView1);
-                tv.setText(s);
+                startActivity(new Intent(MainActivity.this, ProfileSelection.class));
             }
         });
 
 
-*/
+        String ProfileValue = sp.getString("profiliPath","");
+        BufferedReader reader = null;
+
+        String[] temp;
+        try {
+            reader = new BufferedReader(
+                    new FileReader(ProfileValue));
+            String mLine;
+
+            while ((mLine = reader.readLine()) != null) {
+
+                temp = mLine.replace("[","").replace("]","").replace(" ","").split(",");
+                ModuleClass.addAll(Arrays.asList(temp));
+             //  Log.d("provaModuli", ModuleClass.toString());
+            }
+
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+       // Log.d("metodiProfili", reader.toString());
+
+
+
+        profileModules.add(ProfileValue);
+Log.d("profileModules", profileModules.toString());
+        Button btn8 = (Button)findViewById(R.id.button8);
+        /*    final Button btn = (Button) findViewById(R.id.button1);*/
+
+        btn8.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //Metodo per leggere le classi nel package dei moduli e chiamare il metodo exec
+                for (String stringaN:ModuleClass
+                     ) {
+                    //PhoneInfo.class.newInstance();
+                    Log.d("stringaClasse",ModuleClass.get(0));
+                    try {
+                        Class<?> c=Class.forName(stringaN);
+                        Log.d("classesss",c.toString());
+                        Constructor<?> cons = c.getConstructor(Activity.class);
+
+                        Object classe=cons.newInstance(MainActivity.this);
+                        Method method = c.getDeclaredMethod("exec", null);
+                        method.invoke(classe, null);
+                        Log.d("metodo", method.toString());
+                    } catch (ClassNotFoundException e) {
+                        e.printStackTrace();
+                    } catch (NoSuchMethodException e) {
+                        e.printStackTrace();
+                    } catch (IllegalAccessException e) {
+                        e.printStackTrace();
+                    } catch (InstantiationException e) {
+                        e.printStackTrace();
+                    } catch (InvocationTargetException e) {
+                        e.printStackTrace();
+                    }
+                }
+             //   startActivity(new Intent(MainActivity.this, DisplayMessageActivity.class));
+
+
+            }
+        });
+        final TextView helloTextView = (TextView) findViewById(R.id.toolbar_title);
+        helloTextView.setText(Value);
+    }
+
+
+
+
+    public void getProfilesName() throws IOException, PackageManager.NameNotFoundException {
+        PackageManager m = getPackageManager();
+        String s = getPackageName();
+        PackageInfo p = m.getPackageInfo(s, 0);
+        s = p.applicationInfo.dataDir+"/files";
+        Log.d("profili", s);
+        File directory = new File(s);
+
+        files = directory.listFiles();
+
+        Log.d("Files", "Size: "+ files.length);
+        profileList.clear();
+        for(int i=0;i<files.length;i++){
+
+            if(!files[i].isDirectory()){
+                filesNoFolder.add(files[i]);
+                Log.d("filesd3", filesNoFolder.toString());
+                profileList.add(files[i].toString().replace(s+"/",""));
+              Log.d("files", profileList.toString());
+            }}
+
+
+
+    }
+
+  public File[] getFileProfili(){
+        return files;
+
+  }
+
+    public List<File> getNoFolderFileProfili(){
+        return filesNoFolder;
+
+    }
+
+    public List<String> getProfiliList(){
+        return profileList;
+
+    }
+
+    public void setFileProfili(File[] fil){
+        files=fil;
+
+    }
 
 }
 

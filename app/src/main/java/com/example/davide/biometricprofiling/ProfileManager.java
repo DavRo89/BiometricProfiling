@@ -57,8 +57,8 @@ public class ProfileManager extends ActionBarActivity implements MainFragment.On
 
    private static List<String> collection = new ArrayList<String>();
     private static   ArrayList<String> ListCollection = new ArrayList<String>();
-    private File[] files2;
-private List<File> filesNoFolder= new ArrayList<>();
+  //  private File[] files2;
+//private List<File> filesNoFolder= new ArrayList<>();
     JSONObject obj = new JSONObject();
  public   String nomeProfilo;
    public int indiceAssoluto;
@@ -71,6 +71,7 @@ private List<File> filesNoFolder= new ArrayList<>();
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile_manager);
+
 
         try {
             getProfilesName();
@@ -157,116 +158,7 @@ private List<File> filesNoFolder= new ArrayList<>();
             e.printStackTrace();
         }
 
-        /*
-        int posizione;
-        switch (position) {
-            case 0:
-                posizione =0;
-                indiceAssoluto=0;
-                fragment = new RecyclerListFragment();
 
-                try {
-
-                    ReadProfiles(posizione);
-                    Bundle bundle = new Bundle();
-                    bundle.putStringArrayList("nomi", scripts);
-                    fragment.setArguments(bundle);
-
-
-                } catch (PackageManager.NameNotFoundException e) {
-                    e.printStackTrace();
-                } catch (FileNotFoundException e) {
-                    e.printStackTrace();
-                }
-                break;
-
-
-        }
-
-        switch (position) {
-            case 1:
-                indiceAssoluto=1;
-                posizione =1;
-                fragment = new RecyclerListFragment();
-
-                try {
-                    ReadProfiles(posizione);
-                    Bundle bundle = new Bundle();
-                    bundle.putStringArrayList("nomi", scripts);
-                    fragment.setArguments(bundle);
-
-                } catch (PackageManager.NameNotFoundException e) {
-                    e.printStackTrace();
-                } catch (FileNotFoundException e) {
-                    e.printStackTrace();
-                }
-
-                break;
-
-        }
-
-        switch (position) {
-            case 2:
-                indiceAssoluto=2;
-                posizione =2;
-                fragment = new RecyclerListFragment();
-                try {
-                    ReadProfiles(posizione);
-                    Bundle bundle = new Bundle();
-                    bundle.putStringArrayList("nomi", scripts);
-                    fragment.setArguments(bundle);
-
-                } catch (PackageManager.NameNotFoundException e) {
-                    e.printStackTrace();
-                } catch (FileNotFoundException e) {
-                    e.printStackTrace();
-                }
-
-                break;
-
-        }
-        switch (position) {
-            case 3:
-                indiceAssoluto=3;
-                posizione =3;
-                fragment = new RecyclerListFragment();
-
-                try {
-                    ReadProfiles(posizione);
-                    Bundle bundle = new Bundle();
-                    bundle.putStringArrayList("nomi", scripts);
-                    fragment.setArguments(bundle);
-
-
-                } catch (PackageManager.NameNotFoundException e) {
-                    e.printStackTrace();
-                } catch (FileNotFoundException e) {
-                    e.printStackTrace();
-                }
-
-                break;
-
-        }
-
-        /*
-        switch (position) {
-            default: {
-                Log.d("posizione", (" "+position));
-                fragment = new RecyclerListFragment();
-                try {
-                    ReadProfiles(position);
-                    Bundle bundle = new Bundle();
-                    bundle.putStringArrayList("nomi", scripts);
-                    fragment.setArguments(bundle);
-
-                } catch (PackageManager.NameNotFoundException e) {
-                    e.printStackTrace();
-                } catch (FileNotFoundException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-        */
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.content, fragment)
                 .addToBackStack(null)
@@ -293,12 +185,14 @@ scripts.clear();
         try {
 
          //   FileInputStream fis = new FileInputStream(files2[(indice)].toString());
-            Log.d("contenuto",files2[indice].toString());
-            nomeProfilo=files2[indice].toString();
+            Log.d("contenuto",MainActivity.files[indice].toString());
+            MainActivity getProfiles=new MainActivity();
+
+            nomeProfilo=getProfiles.getFileProfili()[indice].toString();
 
             reader = new BufferedReader(
 
-                    new FileReader(filesNoFolder.get(indice)));
+                    new FileReader(getProfiles.getNoFolderFileProfili().get(indice)));
 
             // do reading, usually loop until end of file reading
             String mLine;
@@ -330,27 +224,15 @@ scripts.clear();
 
 
     public void getProfilesName() throws IOException, PackageManager.NameNotFoundException {
-        PackageManager m = getPackageManager();
-        String s = getPackageName();
-        PackageInfo p = m.getPackageInfo(s, 0);
-        s = p.applicationInfo.dataDir+"/files";
-        Log.d("profili", s);
-        File directory = new File(s);
-
-        files2 = directory.listFiles();
-
-        Log.d("Files", "Size: "+ files2.length);
 
         collection.clear();
         ListCollection.clear();
-        for(int i=0;i<files2.length;i++){
 
-            if(!files2[i].isDirectory()){
-filesNoFolder.add(files2[i]);
-        collection.add(files2[i].toString().replace(s+"/",""));
-        ListCollection.add(files2[i].toString().replace(s+"/",""));
-        }}
+        MainActivity getProfiles=new MainActivity();
 
+collection.addAll(getProfiles.getProfiliList());
+
+        ListCollection.addAll(getProfiles.getProfiliList());
 
 Log.d("file", collection.toString());
         Log.d("file2", ListCollection.toString());
