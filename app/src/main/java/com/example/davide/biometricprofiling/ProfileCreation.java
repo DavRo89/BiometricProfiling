@@ -49,7 +49,7 @@ public class ProfileCreation extends AppCompatActivity  implements MainFragment.
 
             Bundle bundle = new Bundle();
             bundle.putStringArrayList("nomi", Lines);
-            Log.d("nomi", biometric_names[1]);
+            Log.d("nomi", Lines.toString());
             fragment2.setArguments(bundle);
             getSupportFragmentManager().beginTransaction()
                     .replace(R.id.content, fragment2)

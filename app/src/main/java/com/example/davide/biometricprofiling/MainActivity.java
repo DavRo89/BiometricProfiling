@@ -9,7 +9,7 @@ import android.content.pm.PackageManager;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.Toolbar;
+
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -33,8 +33,8 @@ public class MainActivity extends AppCompatActivity {
     public static File[] files;
    private  ArrayList<String> ModuleClass = new ArrayList<String>();
    public static List<File> filesNoFolder= new ArrayList<>();
-
-
+  public static final Object lock = new Object();
+public static Boolean Sync=true;
 
 
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,10 +77,12 @@ Log.d("actionBar",getSupportActionBar().toString());
 
 
 
-
-
         try {
-            getProfilesName();
+
+
+                getProfilesName();
+
+
         } catch (IOException e) {
             e.printStackTrace();
         } catch (PackageManager.NameNotFoundException e) {
@@ -118,7 +120,7 @@ Log.d("actionBar",getSupportActionBar().toString());
         btn7.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ModuleClass.clear();
+
                 //when play is clicked show stop button and hide play button
 
                 startActivity(new Intent(MainActivity.this, ProfileSelection.class));
@@ -131,6 +133,7 @@ Log.d("actionBar",getSupportActionBar().toString());
 
         String[] temp;
         try {
+            ModuleClass.clear();
             reader = new BufferedReader(
                     new FileReader(ProfileValue));
             String mLine;
@@ -139,7 +142,7 @@ Log.d("actionBar",getSupportActionBar().toString());
 
                 temp = mLine.replace("[","").replace("]","").replace(" ","").split(",");
                 ModuleClass.addAll(Arrays.asList(temp));
-             //  Log.d("provaModuli", ModuleClass.toString());
+            //   Log.d("provaModuli", ModuleClass.toString());
             }
 
         } catch (FileNotFoundException e) {
@@ -150,43 +153,47 @@ Log.d("actionBar",getSupportActionBar().toString());
        // Log.d("metodiProfili", reader.toString());
 
 
-
+profileModules.clear();
         profileModules.add(ProfileValue);
-Log.d("profileModules", profileModules.toString());
+
         Button btn8 = (Button)findViewById(R.id.button8);
         /*    final Button btn = (Button) findViewById(R.id.button1);*/
 
         btn8.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //Metodo per leggere le classi nel package dei moduli e chiamare il metodo exec
+
+
+
                 for (String stringaN:ModuleClass
                      ) {
                     //PhoneInfo.class.newInstance();
-                    Log.d("stringaClasse",ModuleClass.get(0));
-                    try {
-                        Class<?> c=Class.forName(stringaN);
-                        Log.d("classesss",c.toString());
-                        Constructor<?> cons = c.getConstructor(Activity.class);
 
-                        Object classe=cons.newInstance(MainActivity.this);
-                        Method method = c.getDeclaredMethod("exec", null);
-                        method.invoke(classe, null);
-                        Log.d("metodo", method.toString());
-                    } catch (ClassNotFoundException e) {
-                        e.printStackTrace();
-                    } catch (NoSuchMethodException e) {
-                        e.printStackTrace();
-                    } catch (IllegalAccessException e) {
-                        e.printStackTrace();
-                    } catch (InstantiationException e) {
-                        e.printStackTrace();
-                    } catch (InvocationTargetException e) {
-                        e.printStackTrace();
-                    }
+if(Sync){
+
+    try {
+
+        ExModules(stringaN);
+    } catch (NoSuchMethodException e) {
+        e.printStackTrace();
+    } catch (IllegalAccessException e) {
+        e.printStackTrace();
+    } catch (InvocationTargetException e) {
+        e.printStackTrace();
+    } catch (InstantiationException e) {
+        e.printStackTrace();
+    } catch (ClassNotFoundException e) {
+        e.printStackTrace();
+    }
+
+    Log.d("Siamo qui","Chiamata Sync");
+
+
                 }
-             //   startActivity(new Intent(MainActivity.this, DisplayMessageActivity.class));
 
+
+             //   startActivity(new Intent(MainActivity.this, DisplayMessageActivity.class));
+            }
 
             }
         });
@@ -204,20 +211,28 @@ Log.d("profileModules", profileModules.toString());
         s = p.applicationInfo.dataDir+"/files";
         Log.d("profili", s);
         File directory = new File(s);
+        if(directory.exists()){
+          //  Log.d("files",files[0].toString());
+            files = directory.listFiles();
 
-        files = directory.listFiles();
 
-        Log.d("Files", "Size: "+ files.length);
+
+      //  Log.d("Files", "Size: "+ files.length);
         profileList.clear();
-        for(int i=0;i<files.length;i++){
+filesNoFolder.clear();
 
-            if(!files[i].isDirectory()){
-                filesNoFolder.add(files[i]);
-                Log.d("filesd3", filesNoFolder.toString());
-                profileList.add(files[i].toString().replace(s+"/",""));
-              Log.d("files", profileList.toString());
-            }}
 
+            for(int i=0;i<files.length;i++){
+
+                if(!files[i].isDirectory()){
+                    filesNoFolder.add(files[i]);
+                    Log.d("filesd3", filesNoFolder.toString());
+                    profileList.add(files[i].toString().replace(s+"/",""));
+                    Log.d("files", profileList.toString());
+                }}
+
+
+    }
 
 
     }
@@ -241,6 +256,20 @@ Log.d("profileModules", profileModules.toString());
         files=fil;
 
     }
+
+    //Metodo per leggere le classi nel package dei moduli e chiamare il metodo exec
+    public void ExModules(String stringaN) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException, ClassNotFoundException {
+
+        Class<?> c=Class.forName(stringaN);
+        Log.d("classesss",c.toString());
+        Constructor<?> cons = c.getConstructor(Activity.class);
+        Object classe=cons.newInstance(MainActivity.this);
+        Method method = c.getDeclaredMethod("exec", null);
+
+        method.invoke(classe, null);
+
+    }
+
 
 }
 

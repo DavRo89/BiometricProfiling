@@ -30,14 +30,12 @@
         </activity>
         <activity android:name=".ProfileManager">
         </activity>
-
         <activity android:name=".ProfileCreation">
-        </activity>
-        <activity android:name=".Biometrics_features">
         </activity>
         <activity android:name=".ProfileSelection">
         </activity>
-       
+        <activity android:name=".AddModules">
+        </activity>
     </application>
 
 </manifest>

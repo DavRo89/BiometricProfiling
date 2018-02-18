@@ -55,6 +55,7 @@ profiles.check( sp.getInt("RdBtn", 0));
                 edit.putInt("RdBtn",RadiobtnCkd);
                 edit.commit();
                 String ProfileValue = sp.getString("profiliPath","");
+                Log.d("value",ProfileValue);
                 String ProfileValue2 = sp.getString("profiliNome","");
                 String ProfileValue3 = (""+( sp.getInt("RdBtn", 0)));
                 Log.d("value",ProfileValue3);

@@ -9,7 +9,7 @@ import android.content.res.AssetManager;
 import android.os.Bundle;
 
 /*
- * Copyright (C) 2015 Paul Burke
+ *
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,23 +25,17 @@ import android.os.Bundle;
  */
 
 
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.Toast;
 import org.json.JSONException;
 import org.json.JSONObject;
-import com.getbase.floatingactionbutton.FloatingActionButton;
-import com.getbase.floatingactionbutton.FloatingActionsMenu;
 
-import android.app.Activity;
 import android.graphics.drawable.ShapeDrawable;
-import android.graphics.drawable.shapes.OvalShape;
-import android.os.Bundle;
-import android.view.View;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -53,24 +47,43 @@ public class ProfileManager extends ActionBarActivity implements MainFragment.On
     private final List<String> mItems = new ArrayList<>();
 
  // public   String bio="";
-  private static   ArrayList<String> scripts = new ArrayList<String>();
+  public static   ArrayList<String> scripts = new ArrayList<String>();
 
    private static List<String> collection = new ArrayList<String>();
     private static   ArrayList<String> ListCollection = new ArrayList<String>();
+
+
   //  private File[] files2;
 //private List<File> filesNoFolder= new ArrayList<>();
     JSONObject obj = new JSONObject();
- public   String nomeProfilo;
-   public int indiceAssoluto;
+private  String nomeProfilo;
+  private int indiceAssoluto;
+public static String profiloSelezionato;
+   private  List<String> Biom=new ArrayList<String>();//lista biometrie del profilo letto
 
-
-    public  List<String> Biom=new ArrayList<String>();//lista biometrie del profilo letto
-
-
-    @Override
+   private FloatingActionButton menuMultipleActions;
+    public ShapeDrawable drawable;
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile_manager);
+
+
+       }
+
+
+    protected void onResume() {
+
+        super.onResume();
+        setContentView(R.layout.activity_profile_manager);
+        MainFragment fragment = new MainFragment();
+        Bundle bundle = new Bundle();
+        bundle.putStringArrayList("nomi", scripts);
+        Log.d("vediamo", ListCollection.toString());
+        bundle.putStringArrayList("nomiB", ListCollection);
+        fragment.setArguments(bundle);
+        getSupportFragmentManager().beginTransaction()
+                .add(R.id.content, fragment)
+                .commit();
 
 
         try {
@@ -85,64 +98,25 @@ public class ProfileManager extends ActionBarActivity implements MainFragment.On
         setContentView(R.layout.activity_profile_manager);
         setSupportActionBar((Toolbar) findViewById(R.id.toolbar));
 
-
-
-        if (savedInstanceState == null ) {
-            MainFragment fragment = new MainFragment();
-            Bundle bundle = new Bundle();
-            bundle.putStringArrayList("nomi", scripts);
-            Log.d("vediamo", ListCollection.toString());
-            bundle.putStringArrayList("nomiB", ListCollection);
-            fragment.setArguments(bundle);
-            getSupportFragmentManager().beginTransaction()
-                    .add(R.id.content, fragment)
-                    .commit();
-        }
-        final View actionB = findViewById(R.id.action_b);
-
-        FloatingActionButton actionC = new FloatingActionButton(getBaseContext());
-        actionC.setTitle("Hide/Show Action above");
-        actionC.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                actionB.setVisibility(actionB.getVisibility() == View.GONE ? View.VISIBLE : View.GONE);
-            }
-        });
-
-        final FloatingActionsMenu menuMultipleActions = (FloatingActionsMenu) findViewById(R.id.multiple_actions);
-        menuMultipleActions.addButton(actionC);
-
-
-
-        ShapeDrawable drawable = new ShapeDrawable(new OvalShape());
-        drawable.getPaint().setColor(getResources().getColor(R.color.white));
-
-
-        final FloatingActionButton actionA = (FloatingActionButton) findViewById(R.id.action_a);
-        actionA.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                actionA.setTitle("Action A clicked");
-            }
-        });
-
-
-        FloatingActionButton addedOnce = new FloatingActionButton(this);
-        addedOnce.setTitle("Added once");
-
-
-        FloatingActionButton addedTwice = new FloatingActionButton(this);
-        addedTwice.setTitle("Added twice");
-
-
-
     }
 
     @Override
     public void onListItemClick(int position) {
         Fragment fragment = null;
 
-        fragment = new RecyclerListFragment();
+        menuMultipleActions = (FloatingActionButton) findViewById(R.id.multiple_actions);
+        menuMultipleActions.setVisibility(View.VISIBLE);
+
+     menuMultipleActions.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                startActivity(new Intent(getApplicationContext(), AddModules.class));
+            }
+        });
+
+
+        fragment = new AddFragment();
 
         try {
             Log.d("test", " " + position);
@@ -158,7 +132,7 @@ public class ProfileManager extends ActionBarActivity implements MainFragment.On
             e.printStackTrace();
         }
 
-
+getFragmentManager().popBackStack();
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.content, fragment)
                 .addToBackStack(null)
@@ -186,6 +160,7 @@ scripts.clear();
 
          //   FileInputStream fis = new FileInputStream(files2[(indice)].toString());
             Log.d("contenuto",MainActivity.files[indice].toString());
+            profiloSelezionato=MainActivity.files[indice].toString();
             MainActivity getProfiles=new MainActivity();
 
             nomeProfilo=getProfiles.getFileProfili()[indice].toString();
@@ -202,7 +177,7 @@ scripts.clear();
 
               //  scripts.add(mLine.replace(",", " "));
                scripts.addAll(Arrays.asList(temp));
-
+Log.d("scripts",scripts.toString());
                 if (temp.length > 0) {
 
                 }
@@ -234,8 +209,8 @@ collection.addAll(getProfiles.getProfiliList());
 
         ListCollection.addAll(getProfiles.getProfiliList());
 
-Log.d("file", collection.toString());
-        Log.d("file2", ListCollection.toString());
+//Log.d("file", collection.toString());
+   //     Log.d("file2", ListCollection.toString());
     }
 
 
