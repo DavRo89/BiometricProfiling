@@ -2,6 +2,7 @@ package com.example.davide.biometricprofiling;
 
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.support.v4.app.Fragment;
@@ -97,32 +98,13 @@ public class ProfileCreation extends AppCompatActivity  implements MainFragment.
             e.printStackTrace();
         }
 
-
+        startActivity(new Intent(ProfileCreation.this, MainActivity.class));
     }
 
 
-    public void ReadBtn(View v) {
+    public void Cancel(View v) {
         //reading text from file
-        try {
-            FileInputStream fileIn=openFileInput(nome);
-            InputStreamReader InputRead= new InputStreamReader(fileIn);
-
-            char[] inputBuffer= new char[READ_BLOCK_SIZE];
-            String s="";
-            int charRead;
-
-            while ((charRead=InputRead.read(inputBuffer))>0) {
-                // char to string conversion
-                String readstring=String.copyValueOf(inputBuffer,0,charRead);
-                s +=readstring;
-            }
-            InputRead.close();
-            textmsg.setText(s);
-
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        startActivity(new Intent(ProfileCreation.this, MainActivity.class));
     }
 
     public void Delete(View v){
@@ -146,7 +128,6 @@ public class ProfileCreation extends AppCompatActivity  implements MainFragment.
     public void  getList(List<String> lista){
         ListaBiom.clear();
         ListaBiom.addAll(lista);
-
     }
 
 

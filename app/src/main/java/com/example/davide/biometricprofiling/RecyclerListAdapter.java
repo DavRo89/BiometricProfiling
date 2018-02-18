@@ -99,6 +99,16 @@ public class RecyclerListAdapter extends RecyclerView.Adapter<RecyclerListAdapte
     public void onItemDismiss(int position) {
         mItems.remove(position);
         notifyItemRemoved(position);
+        if(mContext instanceof ProfileCreation){
+            ((ProfileCreation)mContext).getList(mItems);
+
+        }
+        if(mContext instanceof ProfileManager){
+            ((ProfileManager)mContext).getList(mItems);
+
+        }
+        Log.d("siMuove",mItems.toString());
+
 
     }
 

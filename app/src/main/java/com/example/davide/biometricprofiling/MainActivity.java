@@ -45,24 +45,6 @@ public static Boolean Sync=true;
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-/*
-
-        Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
-        setSupportActionBar(myToolbar);
-        getSupportActionBar().setDisplayShowTitleEnabled(true);
-
-        getSupportActionBar().setTitle("titolo");
-
-Log.d("actionBar",getSupportActionBar().toString());
-*/
-        //setSupportActionBar(toolbar);
-
-//toolbar.setTitle("Titolo");
-
-       // mTitle.setText(Value);
-     //   toolbarTop.setTitle("titolo");
-
-        //toolbarTop.setTitle(Value);
 
 
     }
@@ -75,10 +57,7 @@ Log.d("actionBar",getSupportActionBar().toString());
         String Value = sp.getString("profiliNome","");
         Log.d("StringaProfili",Value);
 
-
-
         try {
-
 
                 getProfilesName();
 
